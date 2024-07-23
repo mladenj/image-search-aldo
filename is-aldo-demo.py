@@ -3,13 +3,13 @@ import pinecone
 import pandas as pd
 import streamlit as st
 import os
-from pinecone import Pinecone, ServerlessSpec
-
-# loading env data
+from pinecone import Pinecone
 from dotenv import load_dotenv
+
+# Loading environment variables
 load_dotenv()
 
-# connecting to pinecone
+# Connecting to Pinecone
 pc = Pinecone(
     api_key=os.environ.get("PINECONE_API_KEY")
 )
@@ -17,8 +17,7 @@ pc = Pinecone(
 index_name = 'image-search-aldo-metadata'
 index = pc.Index(index_name)
 
-
-# loading the data
+# Loading the data
 df = pd.read_csv('data/products_aldo_embeddings.csv', index_col=0)
 
 st.image('https://upload.wikimedia.org/wikipedia/commons/3/37/Aldo_Group_logo.svg', width=200)
@@ -39,12 +38,14 @@ st.write("""
 ## Demo
 """)
 
-# Option 1 - Load the model from the local directory where it was saved
-# text_model_path = 'data/clip-ViT-B-32-multilingual-v1'
-# text_model = SentenceTransformer(text_model_path)
 
-# Option 2 - Load the model directly
-text_model = SentenceTransformer('sentence-transformers/clip-ViT-B-32-multilingual-v1')
+# Caching the model
+@st.cache_resource
+def load_model():
+    return SentenceTransformer('sentence-transformers/clip-ViT-B-32-multilingual-v1')
+
+# Load the model
+text_model = load_model()
 
 query = st.text_input("Enter your search query:")
 
@@ -72,8 +73,6 @@ if st.button("Search images"):
                             # Make image clickable
                             col.markdown(f'<a href="{image_url}" target="_blank"><img src="{image_url}" width="150"/></a>', unsafe_allow_html=True)
                             col.markdown(f'<a href="{product_url}" target="_blank">Product ID: {id}</a>', unsafe_allow_html=True)
-                            # col.write(f"Product ID: {id}")
-                            # col.write(f"Product URL: {product_url}")
                         else:
                             col.write("Image URL not found for this product.")
         else:
