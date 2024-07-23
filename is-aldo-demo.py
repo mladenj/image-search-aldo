@@ -25,7 +25,7 @@ st.write("""
 # Semantic Image Search
 """)
 st.write("""
-Semantic image search uses a *text query* or an *input image* to search a database of images to find images that are semantically similar to the search query. Thanks to advances in machine learning and computer vision, we can better understand what a user is looking for when they search for an image. It's completely independent from all text from the website (categorisation, alt tags, description etc.). 
+Semantic image search uses a *text query* to search a database of images to find images that are semantically similar to the search query. Thanks to advances in machine learning and computer vision, we can better understand what a user is looking for when they search for an image. It's completely independent from all text from the website (categorisation, alt tags, description etc.). 
 """)
 st.write("""
 ## Dataset
